@@ -1,10 +1,11 @@
 const media = (bp) => `@media (min-width: ${bp}px)`
 
 const resolutions = {
-  sm: media("480"),
-  md: media("640"),
-  lg: media("720"),
-  xl: media("1024"),
+  xs: media('321'),
+  sm: media('481'),
+  md: media('721'),
+  lg: media('1025'),
+  xl: media('1441'),
 }
 
 export default resolutions;

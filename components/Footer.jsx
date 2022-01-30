@@ -6,7 +6,7 @@ import Link from "next/link";
 import resolutions from "../variables/Constants";
 
 const footer = css({
-  position: "fixed",
+  position: "sticky",
   bottom: 0,
   width: "100%",
   display: "flex",

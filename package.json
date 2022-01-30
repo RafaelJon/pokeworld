@@ -10,11 +10,13 @@
   "dependencies": {
     "@apollo/client": "^3.5.8",
     "@emotion/css": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "graphql": "^16.3.0",
     "next": "12.0.9",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",

@@ -5,46 +5,65 @@ import Image from "next/image";
 import resolutions from "../variables/Constants";
 
 const headerBg = css({
-  position: "fixed",
+  position: 'fixed',
+  zIndex: '100',
   top: 0,
-  width: "100%",
-  transition: ".3s ease-in-out",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100px",
-  padding: "10px",
+  width: '100%',
+  transition: '.3s ease-in-out',
+  height: '5em',
+  padding: '0.5em',
+  '& > div': {
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    maxWidth: '1240px',
+  }
 });
 
 const scrolledBg = css({
-  height: "60px",
-  backdropFilter: "blur(5px)",
-  backgroundColor: "#ffffffcc",
-  boxShadow: "0px 2px 20px grey",
-  transition: ".3s ease-in-out",
+  height: '4em',
+  backdropFilter: 'blur(5px)',
+  backgroundColor: '#ffffffcc',
+  boxShadow: '0 0.125em 2em grey',
 });
 
 const nav = css({
-  position: "relative",
-  padding: "0 10px",
-  display: "none",
+  position: 'relative',
+  padding: '0.35em 1em',
+  margin: '0 1em',
+  border: 'solid 1px black',
+  borderRadius: '9999px',
+  fontWeight: 'bold',
+  display: 'none',
+  right: '0',
+  transition: '.3s ease-in-out',
   [resolutions.sm]: {
-    display: "block",
+    display: 'block',
   },
+  '&:hover':{
+    backgroundColor: 'lightgray'
+  }
 });
 
 const logo = css({
-  position: "relative",
-  height: "100%",
-  width: "60%",
+  position: 'relative',
+  height: '100%',
+  width: '40%',
+  margin: 'auto',
   [resolutions.sm]: {
-    width: "20%",
+    width: '15%',
+    marginLeft: '0',
+  },
+  [resolutions.lg]: {
+    width: '10%',
+    marginLeft: '0',
   },
 });
 
 export default function Header() {
   const [isScrolled, setisScrolled] = useState(false);
-  const headerRef = useRef();
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
@@ -53,21 +72,23 @@ export default function Header() {
   }, []);
 
   return (
-    <div ref={headerRef} className={cx(headerBg, { [scrolledBg]: isScrolled })}>
-      <Link href={"/"}>
-        <a className={nav}>Discover</a>
-      </Link>
-      <div className={logo}>
-        <Image
-          src="/PokeWorld.svg"
-          layout="fill"
-          objectFit="contain"
-          alt="logo"
-        />
+    <div className={cx(headerBg, { [scrolledBg]: isScrolled })}>
+      <div>
+        <div className={logo}>
+          <Image
+            src="/PokeWorld.svg"
+            layout="fill"
+            objectFit="contain"
+            alt="logo"
+          />
+        </div>
+        <Link href={"/"}>
+          <a className={nav}>DISCOVER</a>
+        </Link>
+        <Link href={"/collection"}>
+          <a className={nav}>COLLECTION</a>
+        </Link>
       </div>
-      <Link href={"/collection"}>
-        <a className={nav}>Collection</a>
-      </Link>
     </div>
   );
 }
