@@ -1,16 +1,16 @@
 import { gql } from "@apollo/client";
-import { css, cx } from "@emotion/css";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PokemonCard from "../components/PokemonCard";
-import client from "../variables/Apollo";
-import resolutions from "../variables/Constants";
+import { resolutions } from "../utils/Constants";
+import client from "../utils/Apollo";
 
 const Main = styled.div({
   backgroundImage: 'linear-gradient(to bottom, #ACB6E5, #74ebd5, #ffffff 90%)',
-  padding: '150px 0.5em 50px 0.5em',
+  padding: '6em 0.5em 2em 0.5em',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -95,6 +95,7 @@ const Home = ({ pokemonDatas }) => {
             layout='fill'
             objectFit='contain'
             alt='logo'
+            priority={true}
           />
         </div>
         <h1>Welcome to PokéWorld</h1>
@@ -111,7 +112,7 @@ const Home = ({ pokemonDatas }) => {
         <div className={list}>
           {
             pokemons.map((p, index) => (
-              <PokemonCard picture={p.image} name={p.name} key={'pokemon' + index} />
+              <PokemonCard picture={p.image} name={p.name} id={p.id} key={'pokemon' + index} />
             ))
           }
         </div>
@@ -127,6 +128,7 @@ export async function getStaticProps() {
         pokemons(limit:60, offset:0){
           count,
           results{
+            id,
             name,
             image,
             artwork,

@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { css, cx } from "@emotion/css"
-import styled from '@emotion/styled'
-import resolutions from '../variables/Constants';
+import styled from '@emotion/styled';
 import Link from 'next/link';
+import { resolutions, shimmer, toBase64 } from '../utils/Constants';
 
 const image = css({
   position: 'relative',
@@ -47,36 +47,15 @@ const Card = styled.div({
   }
 })
 
-export default function PokemonCard({ picture = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png', name = 'ASD' }) {
+export default function PokemonCard({ picture = '/pokeball.svg', name = 'UNKNOWN', id = 0 }) {
   const [pokemonImage, setpokemonImage] = useState(picture);
   const [isLoading, setisLoading] = useState(true);
 
-  const toBase64 = (str) =>
-    typeof window === 'undefined'
-      ? Buffer.from(str).toString('base64')
-      : window.btoa(str)
-
-  const shimmer = (w, h) => `
-    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <linearGradient id="g">
-          <stop stop-color="#ccc" offset="20%" />
-          <stop stop-color="#bbb" offset="50%" />
-          <stop stop-color="#ccc" offset="70%" />
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#ccc" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-    </svg>
-  `
-
   return <Link href={{
-    pathname: '/pokemon/[name]',
-    query: { name: name },
+    pathname: '/pokemon/[id]',
+    query: { id: id },
   }}>
     <a>
-
       <Card>
         <div className={cx(image, { [rounded]: isLoading })}>
           <Image

@@ -1,9 +1,9 @@
 import React from "react";
 import { css, cx } from "@emotion/css";
 import { FiCompass } from "react-icons/fi";
-import { MdOutlineCatchingPokemon, MdCatchingPokemon } from "react-icons/md";
+import { MdCatchingPokemon } from "react-icons/md";
 import Link from "next/link";
-import resolutions from "../variables/Constants";
+import { resolutions } from "../utils/Constants";
 
 const footer = css({
   position: "sticky",

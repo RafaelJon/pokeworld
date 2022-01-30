@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { css, cx } from "@emotion/css";
 import Image from "next/image";
-import resolutions from "../variables/Constants";
+import { resolutions } from "../utils/Constants";
 
 const headerBg = css({
   position: 'fixed',
@@ -11,7 +11,7 @@ const headerBg = css({
   width: '100%',
   transition: '.3s ease-in-out',
   height: '5em',
-  padding: '0.5em',
+  padding: '1.25em 1em',
   '& > div': {
     margin: 'auto',
     display: 'flex',
@@ -24,17 +24,20 @@ const headerBg = css({
 
 const scrolledBg = css({
   height: '4em',
+  padding: '0.75em 1em',
   backdropFilter: 'blur(5px)',
-  backgroundColor: '#ffffffcc',
+  backgroundColor: '#ffffffbb',
   boxShadow: '0 0.125em 2em grey',
 });
 
 const nav = css({
+  color: 'white',
+  background: '#1c92d2',
   position: 'relative',
-  padding: '0.35em 1em',
-  margin: '0 1em',
-  border: 'solid 1px black',
-  borderRadius: '9999px',
+  padding: '0.2em 0.75em',
+  marginLeft: '1em',
+  border: 'solid 0.25em #1c92d2',
+  borderRadius: '0.7em',
   fontWeight: 'bold',
   display: 'none',
   right: '0',
@@ -42,23 +45,30 @@ const nav = css({
   [resolutions.sm]: {
     display: 'block',
   },
-  '&:hover':{
-    backgroundColor: 'lightgray'
+  '&:hover': {
+    background: '#0082c8',
+    border: 'solid 0.25em #0082c8',
+
+  },
+  '&:active': {
+    background: '#283c86',
+    border: 'solid 0.25em #1c92d2'
   }
 });
 
 const logo = css({
   position: 'relative',
   height: '100%',
-  width: '40%',
+  width: '100%',
   margin: 'auto',
-  [resolutions.sm]: {
-    width: '15%',
-    marginLeft: '0',
+  '& img': {
+    objectPosition: 'center',
   },
-  [resolutions.lg]: {
-    width: '10%',
+  [resolutions.sm]: {
     marginLeft: '0',
+    '& img': {
+      objectPosition: 'left',
+    },
   },
 });
 
@@ -80,6 +90,7 @@ export default function Header() {
             layout="fill"
             objectFit="contain"
             alt="logo"
+            priority={true}
           />
         </div>
         <Link href={"/"}>

@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { gql } from "@apollo/client";
-import client from "../../../variables/Apollo";
+import client from "../../../utils/Apollo";
 
 export default async function handler(req, res) {
   let offsetData = parseInt(req.query.offset)
