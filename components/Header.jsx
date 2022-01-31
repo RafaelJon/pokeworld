@@ -40,9 +40,9 @@ const nav = css({
   borderRadius: '0.7em',
   fontWeight: 'bold',
   display: 'none',
-  right: '0',
+  // right: '0',
   transition: '.3s ease-in-out',
-  [resolutions.sm]: {
+  [resolutions.md]: {
     display: 'block',
   },
   '&:hover': {
@@ -60,15 +60,13 @@ const logo = css({
   position: 'relative',
   height: '100%',
   width: '100%',
+  maxWidth: '145px',
   margin: 'auto',
   '& img': {
     objectPosition: 'center',
   },
-  [resolutions.sm]: {
+  [resolutions.md]: {
     marginLeft: '0',
-    '& img': {
-      objectPosition: 'left',
-    },
   },
 });
 
@@ -84,15 +82,17 @@ export default function Header() {
   return (
     <div className={cx(headerBg, { [scrolledBg]: isScrolled })}>
       <div>
-        <div className={logo}>
-          <Image
-            src="/PokeWorld.svg"
-            layout="fill"
-            objectFit="contain"
-            alt="logo"
-            priority={true}
-          />
-        </div>
+        <Link href={"/"}>
+          <a className={logo}>
+            <Image
+              src="/PokeWorld.svg"
+              layout="fill"
+              objectFit="contain"
+              alt="logo"
+              priority={true}
+            />
+          </a>
+        </Link>
         <Link href={"/"}>
           <a className={nav}>DISCOVER</a>
         </Link>

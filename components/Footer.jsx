@@ -8,13 +8,14 @@ import { resolutions } from "../utils/Constants";
 const footer = css({
   position: "sticky",
   bottom: 0,
+  height: '5em',
   width: "100%",
   display: "flex",
   padding: "10px",
   backgroundColor: "white",
   borderTop: "solid 1px lightgray",
   justifyContent: "space-around",
-  [resolutions.sm]: {
+  [resolutions.md]: {
     display: "none",
   },
 });

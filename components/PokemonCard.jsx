@@ -68,7 +68,10 @@ export default function PokemonCard({ picture = '/pokeball.svg', name = 'UNKNOWN
             onError={() => {
               setpokemonImage('/pokeball.svg')
             }}
-            onLoadingComplete={() => {
+            onLoadingComplete={({ naturalHeight, naturalWidth }) => {
+              if (naturalHeight === 0 || naturalWidth === 0) {
+                setpokemonImage('/pokeball.svg')
+              }
               setisLoading(false)
             }}
           />

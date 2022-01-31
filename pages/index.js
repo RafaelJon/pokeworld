@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PokemonCard from "../components/PokemonCard";
 import { resolutions } from "../utils/Constants";
@@ -65,8 +65,18 @@ const list = css({
 })
 
 const Home = ({ pokemonDatas }) => {
+  const [owned, setowned] = useState(0);
   const [pokemons, setPokemons] = useState(pokemonDatas);
   const [hasMore, setHasMore] = useState(true);
+  
+  useEffect(() => {
+    let collection = JSON.parse(window.localStorage.getItem('collection'))
+    if (collection != null){
+      setowned([...new Set(collection.map((c)=>c.name))].length)
+      console.log([...new Set(collection.map((c) => c.name))].length)
+    }
+  }, []);
+  
 
   const getMorePokemon = async () => {
     try {
@@ -106,7 +116,7 @@ const Home = ({ pokemonDatas }) => {
       <div className={content}>
         <div>
           <p>
-            Owned: 0 / 1200
+            Owned: {owned} / 1200
           </p>
         </div>
         <div className={list}>

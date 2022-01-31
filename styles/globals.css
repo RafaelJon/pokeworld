@@ -12,6 +12,28 @@ a {
 }
 
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.425em;
+}
+
+h3 {
+  font-size: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+  margin: 0.125em 0;
+}
+
+h6 {
+  font-size: 0.95em;
+  margin: 0.0125em 0;
+}
+
+p {
+  font-size: 0.9em;
 }
