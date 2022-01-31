@@ -45,6 +45,7 @@ const Screen = styled.div(({ animation }) => ({
   bottom: 0,
   left: 0,
   width: '100vw',
+  height: '100%',
   padding: '0.2em',
   background: 'rgba(0,0,0,0.75)',
   transform: 'translate3d(0, -100vh, 0)',
@@ -58,10 +59,13 @@ const show = css({
 const pokeball = css({
   position: 'relative',
   margin: 'auto',
+  bottom: 0,
   width: '80%',
-  paddingTop: '70vh',
+  height: '60%',
+  paddingTop: '50vh',
   display: 'flex',
   flexDirection: 'column',
+  transition: '.5s ease-in-out',
   [resolutions.sm]: {
     width: '100%',
   },
@@ -78,19 +82,24 @@ const catching = css({
 })
 
 const status = css({
-  position: 'absolute',
+  position: 'relative',
+  padding: '0.5em',
+  left: 0,
+  right: 0,
+  top: 0,
   width: '100%',
-  height: '30vh',
+  height: '20%',
   color: 'white',
   textAlign: 'center',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  transition: '.5s ease-in-out',
 })
 
 const Button = styled.button({
-  padding: '0.25em 1em',
+  padding: '0.5em 1em',
   borderRadius: '9999px',
   fontSize: '1em',
   letterSpacing: '2px',
@@ -112,9 +121,9 @@ const primaryButton = css({
 })
 
 const secondaryButton = css({
-  color: 'white',
-  backgroundColor: 'gray',
-  border: 'solid 0.125em gray',
+  color: '#5691c8',
+  backgroundColor: 'white',
+  border: 'solid 0.125em white',
 })
 
 const input = css({
@@ -141,9 +150,9 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
       let caught = Math.random() < 0.5
       if (!caught) {
         setimage(pokemonImage)
-        setstatusMessage('The pokemon broke free... :(')
+        setstatusMessage('The pokémon broke free... :(')
       } else {
-        setstatusMessage('The pokemon has been caught, give a nickname.')
+        setstatusMessage('The pokémon has been caught, give a nickname.')
       }
       setisCaught(caught)
     }, 5000);
@@ -170,8 +179,8 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
 
   const tryAgain = () => {
     return <div>
-      <Button className={secondaryButton} onClick={close}>COMEBACK LATER</Button>
       <Button className={primaryButton} onClick={catchPokemon}>TRY AGAIN</Button>
+      <Button className={secondaryButton} onClick={close}>COMEBACK LATER</Button>
     </div>
   }
 
@@ -190,6 +199,11 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
   }
 
   return <Screen animation={isShown ? fallIn : flyUp}>
+    <div className={status}>
+      <h3>
+        {statusMessage}
+      </h3>
+    </div>
     <div className={cx(pokeball, { [catching]: isCaught === undefined })}>
       <Image
         src={image}
@@ -200,16 +214,13 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
           setimage('/pokeball.svg')
         }}
       />
-      <div className={status}>
-        <h3>
-          {statusMessage}
-        </h3>
-        {
-          isCaught === undefined ? <></> :
-            isCaught ? inputNickName() :
-              tryAgain()
-        }
-      </div>
+    </div>
+    <div className={status}>
+      {
+        isCaught === undefined ? <></> :
+          isCaught ? inputNickName() :
+            tryAgain()
+      }
     </div>
   </Screen>;
 }

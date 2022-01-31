@@ -61,6 +61,7 @@ const CatchButton = styled.button({
   [resolutions.md]: {
     height: 'unset',
     width: 'unset',
+    zIndex: 'unset',
     transform: 'translateY(0)',
     position: 'absolute',
     padding: '0.25em 1em',
@@ -182,12 +183,6 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
   const mainRef = useRef();
   const imageRef = useRef();
 
-  useEffect(() => {
-    if (isCatching) {
-
-    }
-  }, [isCatching]);
-
   const closeCatching = () => {
     setisCatching(false)
   }
@@ -196,12 +191,11 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
     try {
       let collection = JSON.parse(window.localStorage.getItem('collection')) !== null ? JSON.parse(window.localStorage.getItem('collection')) : []
       window.localStorage.setItem('collection', JSON.stringify([...collection, {
-        image: picture,
+        picture: pokemon.image,
         nickname: nickname,
         name: pokemon.name
       }]))
     } catch (error) {
-      console.log(error)
       alert('collection is full')
     }
   }
@@ -279,7 +273,7 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
               <div className={itemGrid}>
                 {
                   pokemon.abilities.map((ability, index) => (
-                    <em className={content} key={'move' + index}>
+                    <em className={content} key={'ability' + index}>
                       {ability}
                     </em>
                   ))
@@ -303,8 +297,8 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
                       </h6>
                     </div>
                     {
-                      group.moves.map((move) => (
-                        <div className={moveGrid} key={"move" + move.name}>
+                      group.moves.map((move, index) => (
+                        <div className={moveGrid} key={"move" + index}>
                           <p>
                             {move.level}
                           </p>
@@ -425,6 +419,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       pokemon: {
+        image: data.pokemons.results[0] !== undefined ? data.pokemons.results[0].image : '/pokeball.svg',
         name: detail.data.pokemon.name,
         species: detail.data.pokemon.species,
         types: detail.data.pokemon.types.map((t) => t.type.name),

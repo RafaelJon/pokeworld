@@ -64,19 +64,18 @@ const list = css({
   }
 })
 
-const Home = ({ pokemonDatas }) => {
+const Home = ({ count, pokemonDatas }) => {
   const [owned, setowned] = useState(0);
   const [pokemons, setPokemons] = useState(pokemonDatas);
   const [hasMore, setHasMore] = useState(true);
-  
+
   useEffect(() => {
     let collection = JSON.parse(window.localStorage.getItem('collection'))
-    if (collection != null){
-      setowned([...new Set(collection.map((c)=>c.name))].length)
-      console.log([...new Set(collection.map((c) => c.name))].length)
+    if (collection != null) {
+      setowned([...new Set(collection.map((c) => c.name))].length)
     }
   }, []);
-  
+
 
   const getMorePokemon = async () => {
     try {
@@ -95,7 +94,7 @@ const Home = ({ pokemonDatas }) => {
       next={getMorePokemon}
       hasMore={hasMore}
       className={css({
-        height: '100%'
+        minHeight: 'calc(100vh - 5em)',
       })}
     >
       <Main>
@@ -116,13 +115,13 @@ const Home = ({ pokemonDatas }) => {
       <div className={content}>
         <div>
           <p>
-            Owned: {owned} / 1200
+            Owned: {owned} / {count}
           </p>
         </div>
         <div className={list}>
           {
             pokemons.map((p, index) => (
-              <PokemonCard picture={p.image} name={p.name} id={p.id} key={'pokemon' + index} />
+              <PokemonCard picture={p.image} name={p.name} id={p.id} key={'pokemon' + p.id} />
             ))
           }
         </div>
@@ -152,6 +151,7 @@ export async function getStaticProps() {
 
   return {
     props: {
+      count: data.pokemons.count,
       pokemonDatas: data.pokemons.results
     },
     revalidate: 3600,
