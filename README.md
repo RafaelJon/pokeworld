@@ -1,7 +1,7 @@
 ## PokéWorld
 **PokéWorld** is a web app for pokémon lovers, **PokéWorld** is built on top of **NextJS** with **Emotion** for the styling. The pokémon data is fetched from **graphql-pokeapi** by **mazipan** using **Apollo**.
 
-Check out the demo [her](https://pokeworld-topaz.vercel.app/).
+Check out the demo [here](https://pokeworld-topaz.vercel.app/).
 
 ## Feature
 Here is some of the thing you can do with **PokéWorld**:
