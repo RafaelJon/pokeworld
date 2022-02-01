@@ -7,8 +7,8 @@ import { resolutions, shimmer, toBase64 } from '../utils/Constants';
 
 const image = css({
   position: 'relative',
-  width: '75%',
-  paddingTop: '75%',
+  width: '90%',
+  paddingTop: '90%',
   margin: '-30% auto 0 auto',
   [resolutions.xs]: {
     marginTop: '-40%',
@@ -25,16 +25,22 @@ const Card = styled.div({
   marginTop: '40%',
   backgroundColor: 'white',
   borderRadius: '12px',
-  boxShadow: '0px 0.35em 0.5em 0.125em lightgray',
+  boxShadow: '0px 0.125em 0.5em 0.125em lightgray',
   display: 'flex',
   flexDirection: 'column',
   transition: ".3s ease-in-out",
-  '& > span': {
+  '& > em': {
+    wordBreak: 'break-all',
     position: 'static',
-    margin: '1em auto',
-    padding: '1.25em 1em 0 1em',
+    margin: '0.5em auto 1em auto',
+    padding: '0 1em',
     transform: 'translateY(-20%)',
-    textAlign: 'center'
+    textAlign: 'center',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: '1'
   },
   '&: hover': {
     transform: 'scale(1.05)',
@@ -57,7 +63,7 @@ export default function PokemonCard({ picture = '/pokeball.svg', name = 'UNKNOWN
   }}>
     <a>
       <Card>
-        <div className={cx(image, { [rounded]: isLoading })}>
+        <div className={cx(image, { [rounded]: isLoading },)}>
           <Image
             src={pokemonImage}
             layout='fill'
@@ -76,9 +82,9 @@ export default function PokemonCard({ picture = '/pokeball.svg', name = 'UNKNOWN
             }}
           />
         </div>
-        <span>
+        <em>
           {name}
-        </span>
+        </em>
       </Card>
     </a>
   </Link>

@@ -1,9 +1,10 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import CollectionCard from "../components/CollectionCard";
 import { resolutions } from "../utils/Constants";
+import { CollectionContext } from "./_app";
 
 const Main = styled.div({
   backgroundImage: 'linear-gradient(to bottom, #ACB6E5, #74ebd5, #ffffff 90%)',
@@ -62,25 +63,18 @@ const list = css({
 })
 
 export default function Collection() {
+  const collectionContext = useContext(CollectionContext);
   const d = new Date()
-  const [collection, setcollection] = useState([]);
-
-  useEffect(() => {
-    let data = JSON.parse(window.localStorage.getItem('collection'))
-    if (data != null) {
-      setcollection(data)
-    }
-  }, []);
 
   const release = (idx) => {
-    let newCollection = [...collection]
-    newCollection.splice(idx, 1)
-    setcollection(newCollection)
-    window.localStorage.setItem('collection', JSON.stringify(newCollection))
+    collectionContext.collectionDispatch({ type: 'release', idx: idx })
   }
 
   return <div className={css({
     minHeight: 'calc(100vh - 5em)',
+    [resolutions.md]: {
+      minHeight: 'calc(100vh)',
+    }
   })}>
     <Main>
       <div>
@@ -99,7 +93,7 @@ export default function Collection() {
     </Main>
     <div>
       {
-        collection.length === 0 ?
+        collectionContext.collection.length === 0 ?
           (<h3 className={css({
             padding: '1em',
             textAlign: 'center'
@@ -110,7 +104,7 @@ export default function Collection() {
             <div className={content}>
               <div className={list}>
                 {
-                  collection.map((p, index) => (
+                  collectionContext.collection.map((p, index) => (
                     <CollectionCard {...p} release={() => { release(index) }} key={'pokemon' + index + d.getTime()} />
                   ))
                 }

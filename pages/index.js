@@ -2,11 +2,12 @@ import { gql } from "@apollo/client";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PokemonCard from "../components/PokemonCard";
 import { resolutions } from "../utils/Constants";
 import client from "../utils/Apollo";
+import { CollectionContext } from "./_app";
 
 const Main = styled.div({
   backgroundImage: 'linear-gradient(to bottom, #ACB6E5, #74ebd5, #ffffff 90%)',
@@ -65,17 +66,9 @@ const list = css({
 })
 
 const Home = ({ count, pokemonDatas }) => {
-  const [owned, setowned] = useState(0);
+  const collectionContext = useContext(CollectionContext);
   const [pokemons, setPokemons] = useState(pokemonDatas);
   const [hasMore, setHasMore] = useState(true);
-
-  useEffect(() => {
-    let collection = JSON.parse(window.localStorage.getItem('collection'))
-    if (collection != null) {
-      setowned([...new Set(collection.map((c) => c.name))].length)
-    }
-  }, []);
-
 
   const getMorePokemon = async () => {
     try {
@@ -95,6 +88,9 @@ const Home = ({ count, pokemonDatas }) => {
       hasMore={hasMore}
       className={css({
         minHeight: 'calc(100vh - 5em)',
+        [resolutions.md]: {
+          minHeight: 'calc(100vh)',
+        }
       })}
     >
       <Main>
@@ -115,13 +111,13 @@ const Home = ({ count, pokemonDatas }) => {
       <div className={content}>
         <div>
           <p>
-            Owned: {owned} / {count}
+            Owned: {collectionContext.collection.length} / {count}
           </p>
         </div>
         <div className={list}>
           {
             pokemons.map((p, index) => (
-              <PokemonCard picture={p.image} name={p.name} id={p.id} key={'pokemon' + p.id} />
+              <PokemonCard picture={p.image} name={p.name} id={index + 1} key={'pokemon' + p.id + p.name} />
             ))
           }
         </div>
@@ -142,7 +138,6 @@ export async function getStaticProps() {
             image,
             artwork,
             dreamworld,
-            url
           }
         }
       }

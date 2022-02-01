@@ -27,7 +27,7 @@ const scrolledBg = css({
   padding: '0.75em 1em',
   backdropFilter: 'blur(5px)',
   backgroundColor: '#ffffffbb',
-  boxShadow: '0 0.125em 2em grey',
+  boxShadow: '0 0.125em 0.5em rgba(0, 0, 0, 0.25)',
 });
 
 const nav = css({
@@ -40,7 +40,6 @@ const nav = css({
   borderRadius: '0.7em',
   fontWeight: 'bold',
   display: 'none',
-  // right: '0',
   transition: '.3s ease-in-out',
   [resolutions.md]: {
     display: 'block',
@@ -52,7 +51,7 @@ const nav = css({
   },
   '&:active': {
     background: '#283c86',
-    border: 'solid 0.25em #1c92d2'
+    border: 'solid 0.25em #283c86'
   }
 });
 

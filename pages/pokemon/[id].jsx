@@ -2,17 +2,22 @@ import { gql } from '@apollo/client';
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import client from '../../utils/Apollo';
 import { resolutions, shimmer, toBase64, typeColor } from '../../utils/Constants';
 import ColorThief from 'colorthief'
 import DefaultErrorPage from 'next/error'
 import CatchingPokemon from '../../components/CatchingPokemon';
+import { CollectionContext } from '../_app';
 
 const Main = styled.div(({ color }) => ({
   backgroundImage: `linear-gradient(to bottom, ${color} 30%, #ffffff 80%)`,
   display: 'flex',
   transition: "box-shadow 0.5s ease-in-out",
+  minHeight: 'calc(100vh - 5em)',
+  [resolutions.md]: {
+    minHeight: 'calc(100vh)',
+  },
   '& > div': {
     margin: 'auto',
     display: 'flex',
@@ -89,15 +94,16 @@ const Card = styled.div({
   width: '100%',
   padding: '3em 1em 1em 1em',
   backgroundColor: 'white',
-  borderRadius: '12px',
-  boxShadow: '0px 0.35em 0.5em 0.125em lightgray',
+  borderRadius: '6px',
+  boxShadow: '0px 0.125em 0.35em 0.1em gray',
   display: 'flex',
   flexDirection: 'column',
   transition: ".3s ease-in-out",
   '& > h1': {
     textAlign: 'center',
     textTransform: 'uppercase',
-    wordWrap: 'break-word'
+    wordWrap: 'break-word',
+    margin: '0'
   },
   [resolutions.md]: {
     width: '70%',
@@ -107,6 +113,7 @@ const Card = styled.div({
 })
 
 const atrTitle = css({
+  marginTop: '0.25em',
   marginBottom: '0.25em'
 })
 
@@ -175,29 +182,26 @@ const TypeP = styled.p(props => ({
 }))
 
 const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
+  const collectionContext = useContext(CollectionContext);
   const [isCatching, setisCatching] = useState(false);
   const [pokemonImage, setpokemonImage] = useState(picture);
   const [color, setcolor] = useState('#ffffff');
   const [opacity, setopacity] = useState(1);
   const [isLoading, setisLoading] = useState(true);
-  const mainRef = useRef();
-  const imageRef = useRef();
 
   const closeCatching = () => {
     setisCatching(false)
   }
 
   const caughtPokemon = (nickname) => {
-    try {
-      let collection = JSON.parse(window.localStorage.getItem('collection')) !== null ? JSON.parse(window.localStorage.getItem('collection')) : []
-      window.localStorage.setItem('collection', JSON.stringify([...collection, {
+    collectionContext.collectionDispatch({
+      type: 'catch',
+      pokemon: {
         picture: pokemon.image,
         nickname: nickname,
         name: pokemon.name
-      }]))
-    } catch (error) {
-      alert('collection is full')
-    }
+      }
+    })
   }
 
   const setBg = () => {
@@ -216,11 +220,11 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
 
   return (<>
     {isCatching && <CatchingPokemon pokemonImage={picture} closeCatching={closeCatching} caughtPokemon={caughtPokemon} />}
-    <Main color={color} ref={mainRef} style={{
+    <Main color={color} style={{
       boxShadow: `inset 0 80vh 10em -10em rgba(150, 150, 150, ${opacity}), inset 0 0 10em 50vw rgba(225, 225, 225, ${opacity})`
     }}>
       <div>
-        <div className={cx(image, { [rounded]: isLoading })} ref={imageRef} >
+        <div className={cx(image, { [rounded]: isLoading })}>
           <Image
             id='pokemon-img'
             src={pokemonImage}
@@ -369,9 +373,6 @@ export async function getStaticProps({ params }) {
         pokemon(name:"${data.pokemons.results[0].name}"){
           id,
           name,
-          species{
-            name
-          },
           abilities{
             ability{
               name
@@ -421,7 +422,6 @@ export async function getStaticProps({ params }) {
       pokemon: {
         image: data.pokemons.results[0] !== undefined ? data.pokemons.results[0].image : '/pokeball.svg',
         name: detail.data.pokemon.name,
-        species: detail.data.pokemon.species,
         types: detail.data.pokemon.types.map((t) => t.type.name),
         abilities: detail.data.pokemon.abilities.map((a) => a.ability.name),
         moveGroups: moveGroups

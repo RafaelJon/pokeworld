@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { css, cx, keyframes } from '@emotion/css'
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { resolutions } from '../utils/Constants';
+import { CollectionContext } from '../pages/_app';
 
 const fallIn = keyframes`
   from {
@@ -52,8 +53,8 @@ const Screen = styled.div(({ animation }) => ({
   animation: `${animation} .5s ease-in-out forwards`
 }))
 
-const show = css({
-  transform: 'translate3d(0, 0, 0)',
+const caughtPokeball = css({
+  filter: 'brightness(60%)'
 })
 
 const pokeball = css({
@@ -127,6 +128,7 @@ const secondaryButton = css({
 })
 
 const input = css({
+  margin: '0.5em',
   padding: '0.25em 1em',
   borderRadius: '9999px',
   fontSize: '1em',
@@ -135,14 +137,18 @@ const input = css({
 })
 
 export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPokemon }) {
+  const collectionContext = useContext(CollectionContext);
+
   const [isShown, setisShown] = useState(true);
   const [nickname, setnickname] = useState('');
   const [image, setimage] = useState('/pokeball_colored.svg');
   const [statusMessage, setstatusMessage] = useState('catching...');
+  const [error, seterror] = useState('');
   const [isCaught, setisCaught] = useState(undefined);
 
   const catchPokemon = () => {
     setnickname('')
+    seterror('')
     setstatusMessage('catching...')
     setimage('/pokeball_colored.svg')
     setisCaught(undefined)
@@ -166,11 +172,17 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
   }
 
   const caught = () => {
-    setisShown(false)
-    setTimeout(() => {
-      closeCatching()
-      caughtPokemon(nickname)
-    }, 500);
+    if (nickname === '') {
+      seterror('nickname can\'t be empty!')
+    } else if (collectionContext.collection.map((c) => c.nickname).indexOf(nickname) > -1) {
+      seterror('nickname has already been taken!')
+    } else {
+      setisShown(false)
+      setTimeout(() => {
+        closeCatching()
+        caughtPokemon(nickname)
+      }, 500);
+    }
   }
 
   useEffect(() => {
@@ -178,14 +190,25 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
   }, []);
 
   const tryAgain = () => {
-    return <div>
+    return <div className={css({
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      flexWrap: 'wrap',
+      justifyContent: 'center'
+    })}>
       <Button className={primaryButton} onClick={catchPokemon}>TRY AGAIN</Button>
       <Button className={secondaryButton} onClick={close}>COMEBACK LATER</Button>
     </div>
   }
 
   const inputNickName = () => {
-    return <div>
+    return <div className={css({
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      maxWidth: '480px',
+    })}>
       <input
         className={input}
         placeholder='nickname'
@@ -193,8 +216,20 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
           setnickname(e.target.value)
         }}
         value={nickname}
+        autoFocus
       />
+      {
+        error !== '' &&
+        <p className={css({
+          width: '100%',
+          color: '#ff4444',
+          margin: '0 auto'
+        })}>
+          {error}
+        </p>
+      }
       <Button className={primaryButton} onClick={caught}>SUBMIT</Button>
+      <Button className={secondaryButton} onClick={close}>RELEASE</Button>
     </div>
   }
 
@@ -204,7 +239,7 @@ export default function CatchingPokemon({ pokemonImage, closeCatching, caughtPok
         {statusMessage}
       </h3>
     </div>
-    <div className={cx(pokeball, { [catching]: isCaught === undefined })}>
+    <div className={cx(pokeball, { [catching]: isCaught === undefined }, { [caughtPokeball]: isCaught })}>
       <Image
         src={image}
         layout='fill'
