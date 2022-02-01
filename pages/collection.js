@@ -1,4 +1,5 @@
 import { css } from "@emotion/css";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 import { useContext } from "react";
 import CollectionCard from "../components/CollectionCard";
@@ -20,6 +21,26 @@ export default function Collection() {
       minHeight: 'calc(100vh)',
     }
   })}>
+    <NextSeo
+      title="PokéWorld | Collection"
+      description="PokéWorld is a web app for pokémon lover to view and catch pokémon."
+      canonical="https://pokeworld-topaz.vercel.app/"
+      openGraph={{
+        type: 'website',
+        locale: 'en_US',
+        url: 'https://pokeworld-topaz.vercel.app/collection',
+        site_name: 'PokéWorld | Collection',
+        description: "PokéWorld is a web app for pokémon lover to view and catch pokémon.",
+        images: [
+          {
+            url: 'https://res.cloudinary.com/raffijhonz/image/upload/v1643727156/pokeworld/PokeWorld_rcbd7r.png',
+            width: 540,
+            height: 168,
+            alt: 'web logo',
+          },
+        ]
+      }}
+    />
     <Main>
       <div>
         <Image

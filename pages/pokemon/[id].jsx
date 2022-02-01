@@ -10,6 +10,8 @@ import DefaultErrorPage from 'next/error'
 import CatchingPokemon from '../../components/CatchingPokemon';
 import { CollectionContext } from '../_app';
 import { circle } from '../../styles/Component';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 
 const Main = styled.div(({ color }) => ({
   backgroundImage: `linear-gradient(to bottom, ${color} 30%, #ffffff 80%)`,
@@ -178,6 +180,7 @@ const TypeP = styled.p(props => ({
 }))
 
 const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
+  const router = useRouter()
   const collectionContext = useContext(CollectionContext);
   const [isCatching, setisCatching] = useState(false);
   const [pokemonImage, setpokemonImage] = useState(picture);
@@ -215,6 +218,26 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
   if (notFound) return <DefaultErrorPage statusCode={404} />
 
   return (<>
+    <NextSeo
+      title={`PokéWorld | ${pokemon.name}`}
+      description="PokéWorld is a web app for pokémon lover to view and catch pokémon."
+      canonical="https://pokeworld-topaz.vercel.app/"
+      openGraph={{
+        type: 'website',
+        locale: 'en_US',
+        url: `https://pokeworld-topaz.vercel.app/pokemon/${router.query.id}`,
+        site_name: `PokéWorld | ${pokemon.name}`,
+        description: "PokéWorld is a web app for pokémon lover to view and catch pokémon.",
+        images: [
+          {
+            url: 'https://res.cloudinary.com/raffijhonz/image/upload/v1643727156/pokeworld/PokeWorld_rcbd7r.png',
+            width: 540,
+            height: 168,
+            alt: 'web logo',
+          },
+        ]
+      }}
+    />
     {isCatching && <CatchingPokemon pokemonImage={picture} closeCatching={closeCatching} caughtPokemon={caughtPokemon} />}
     <Main color={color} style={{
       boxShadow: `inset 0 80vh 10em -10em rgba(150, 150, 150, ${opacity}), inset 0 0 10em 50vw rgba(225, 225, 225, ${opacity})`

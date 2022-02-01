@@ -8,6 +8,7 @@ import { resolutions } from "../utils/Constants";
 import client from "../utils/Apollo";
 import { CollectionContext } from "./_app";
 import { content, list, Main } from "../styles/Component";
+import { NextSeo } from "next-seo";
 
 const Home = ({ count, pokemonDatas }) => {
   const collectionContext = useContext(CollectionContext);
@@ -37,6 +38,26 @@ const Home = ({ count, pokemonDatas }) => {
         }
       })}
     >
+      <NextSeo
+        title="PokéWorld | Discover"
+        description="PokéWorld is a web app for pokémon lover to view and catch pokémon."
+        canonical="https://pokeworld-topaz.vercel.app/"
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://pokeworld-topaz.vercel.app/',
+          site_name: 'PokéWorld | Discover',
+          description: "PokéWorld is a web app for pokémon lover to view and catch pokémon.",
+          images: [
+            {
+              url: 'https://res.cloudinary.com/raffijhonz/image/upload/v1643727156/pokeworld/PokeWorld_rcbd7r.png',
+              width: 540,
+              height: 168,
+              alt: 'web logo',
+            },
+          ]
+        }}
+      />
       <Main>
         <div>
           <Image
