@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { collectionReducer } from '../reducer/collectionReducer';

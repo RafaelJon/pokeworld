@@ -1,24 +1,11 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { css, cx } from "@emotion/css"
+import { cx } from "@emotion/css"
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { resolutions, shimmer, toBase64 } from '../utils/Constants';
-
-const image = css({
-  position: 'relative',
-  width: '90%',
-  paddingTop: '90%',
-  margin: '-30% auto 0 auto',
-  [resolutions.xs]: {
-    marginTop: '-40%',
-  }
-})
-
-const rounded = css({
-  overflow: 'hidden',
-  borderRadius: '9999px',
-})
+import { image } from '../styles/Card';
+import { circle } from '../styles/Component';
 
 const Card = styled.div({
   width: '100%',
@@ -63,7 +50,7 @@ export default function PokemonCard({ picture = '/pokeball.svg', name = 'UNKNOWN
   }}>
     <a>
       <Card>
-        <div className={cx(image, { [rounded]: isLoading },)}>
+        <div className={cx(image, { [circle]: isLoading },)}>
           <Image
             src={pokemonImage}
             layout='fill'

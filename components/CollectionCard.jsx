@@ -1,23 +1,10 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { css, cx } from "@emotion/css"
+import { cx } from "@emotion/css"
 import styled from '@emotion/styled';
-import { resolutions, shimmer, toBase64 } from '../utils/Constants';
-
-const image = css({
-  position: 'relative',
-  width: '90%',
-  paddingTop: '90%',
-  margin: '-30% auto 0 auto',
-  [resolutions.xs]: {
-    marginTop: '-40%',
-  }
-})
-
-const rounded = css({
-  overflow: 'hidden',
-  borderRadius: '9999px',
-})
+import { shimmer, toBase64 } from '../utils/Constants';
+import { image } from '../styles/Card';
+import { circle } from '../styles/Component';
 
 const Card = styled.div({
   width: '100%',
@@ -58,7 +45,7 @@ const Button = styled.button({
   fontSize: '1em',
   transition: '.3s ease-in-out',
   userSelect: 'none',
-  margin: '0.5em 1em',
+  margin: '0.5em 1em 1em 1em',
   color: 'white',
   backgroundColor: '#ee1515',
   border: 'solid 0.125em #ee1515',
@@ -73,7 +60,7 @@ export default function CollectionCard({ picture = '/pokeball.svg', name = 'UNKN
   const [isLoading, setisLoading] = useState(true);
 
   return <Card>
-    <div className={cx(image, { [rounded]: isLoading }, )}>
+    <div className={cx(image, { [circle]: isLoading },)}>
       <Image
         src={pokemonImage}
         layout='fill'

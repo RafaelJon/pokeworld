@@ -2,13 +2,14 @@ import { gql } from '@apollo/client';
 import { css, cx } from '@emotion/css';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import client from '../../utils/Apollo';
 import { resolutions, shimmer, toBase64, typeColor } from '../../utils/Constants';
 import ColorThief from 'colorthief'
 import DefaultErrorPage from 'next/error'
 import CatchingPokemon from '../../components/CatchingPokemon';
 import { CollectionContext } from '../_app';
+import { circle } from '../../styles/Component';
 
 const Main = styled.div(({ color }) => ({
   backgroundImage: `linear-gradient(to bottom, ${color} 30%, #ffffff 80%)`,
@@ -82,11 +83,6 @@ const CatchButton = styled.button({
   '&:active': {
     background: '#01baef',
   }
-})
-
-const rounded = css({
-  overflow: 'hidden',
-  borderRadius: '9999px',
 })
 
 const Card = styled.div({
@@ -224,7 +220,7 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
       boxShadow: `inset 0 80vh 10em -10em rgba(150, 150, 150, ${opacity}), inset 0 0 10em 50vw rgba(225, 225, 225, ${opacity})`
     }}>
       <div>
-        <div className={cx(image, { [rounded]: isLoading })}>
+        <div className={cx(image, { [circle]: isLoading })}>
           <Image
             id='pokemon-img'
             src={pokemonImage}
@@ -250,7 +246,7 @@ const Pokemon = ({ notFound = false, pokemon, picture = '/pokeball.svg' }) => {
               setisCatching(true)
             }}
           >
-            catch
+            CATCH
           </CatchButton>
         </div>
         <Card>

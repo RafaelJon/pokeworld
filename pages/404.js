@@ -33,7 +33,6 @@ const Main = styled.div({
   }
 })
 
-
 const nav = css({
   color: 'white',
   background: '#1c92d2',
@@ -79,7 +78,7 @@ export default function Custom404() {
         Let&apos;s go back before wild pokémons attack!
       </p>
       <Link href={"/"}>
-        <a className={nav}><p>go back</p></a>
+        <a className={nav}><p>Go back</p></a>
       </Link>
     </Main>
   </div>;

@@ -1,5 +1,5 @@
 import React from "react";
-import { css, cx } from "@emotion/css";
+import { css } from "@emotion/css";
 import { FiCompass } from "react-icons/fi";
 import { MdCatchingPokemon } from "react-icons/md";
 import Link from "next/link";
